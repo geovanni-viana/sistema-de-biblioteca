@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca — Sistema de Acervo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">§</span>
+    <div class="brand-text">
+      <h1>Biblioteca</h1>
+      <p>Catálogo, empréstimos e devoluções</p>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn is-active" data-tab="acervo">Acervo</button>
+    <button class="tab-btn" data-tab="emprestimos">Empréstimos</button>
+    <button class="tab-btn" data-tab="historico">Histórico</button>
+  </nav>
+</header>
+
+<div class="storage-warning" id="storage-warning" hidden>
+  ⚠ Este navegador bloqueou o armazenamento local para arquivos abertos direto do disco. O app funciona normalmente, mas os dados serão perdidos ao recarregar a página. Para salvar de verdade, sirva a pasta por um servidor local (ex.: <code>python -m http.server</code>) ou publique no GitHub Pages.
+</div>
+
+<main>
+
+  <!-- ACERVO -->
+  <section class="tab-panel is-active" id="panel-acervo">
+
+    <div class="panel-grid">
+      <div class="card form-card">
+        <h2>Cadastrar livro</h2>
+        <form id="form-livro" autocomplete="off">
+          <label>
+            Título *
+            <input type="text" id="livro-titulo" required placeholder="Ex: Dom Casmurro">
+          </label>
+          <label>
+            Autor *
+            <input type="text" id="livro-autor" required placeholder="Ex: Machado de Assis">
+          </label>
+          <div class="field-row">
+            <label>
+              Categoria
+              <input type="text" id="livro-categoria" placeholder="Ex: Romance">
+            </label>
+            <label>
+              ISBN
+              <input type="text" id="livro-isbn" placeholder="Opcional">
+            </label>
+          </div>
+          <label class="field-narrow">
+            Exemplares
+            <input type="number" id="livro-exemplares" min="1" value="1">
+          </label>
+          <button type="submit" class="btn btn-primary">Adicionar ao acervo</button>
+        </form>
+      </div>
+
+      <div class="card list-card">
+        <div class="list-card-head">
+          <h2>Acervo <span class="count-badge" id="acervo-count">0</span></h2>
+          <label class="search-box">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><line x1="11.2" y1="11.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <input type="text" id="busca-input" placeholder="Buscar por título ou autor…">
+          </label>
+        </div>
+        <div id="lista-livros" class="card-grid"></div>
+        <p class="empty-state" id="acervo-empty" hidden>Nenhum livro encontrado. Cadastre o primeiro título ao lado.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- EMPRÉSTIMOS -->
+  <section class="tab-panel" id="panel-emprestimos">
+
+    <div class="panel-grid">
+      <div class="card form-card">
+        <h2>Registrar empréstimo</h2>
+        <form id="form-emprestimo" autocomplete="off">
+          <label>
+            Livro *
+            <select id="emprestimo-livro" required></select>
+          </label>
+          <label>
+            Nome do leitor *
+            <input type="text" id="emprestimo-leitor" required placeholder="Ex: Ana Souza">
+          </label>
+          <label>
+            Devolução prevista
+            <input type="date" id="emprestimo-prazo">
+          </label>
+          <button type="submit" class="btn btn-primary">Emprestar</button>
+          <p class="form-hint" id="emprestimo-hint"></p>
+        </form>
+      </div>
+
+      <div class="card list-card">
+        <div class="list-card-head">
+          <h2>Empréstimos ativos <span class="count-badge" id="ativos-count">0</span></h2>
+        </div>
+        <div id="lista-emprestimos" class="ledger"></div>
+        <p class="empty-state" id="emprestimos-empty" hidden>Nenhum empréstimo em aberto no momento.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- HISTÓRICO -->
+  <section class="tab-panel" id="panel-historico">
+    <div class="card list-card full">
+      <div class="list-card-head">
+        <h2>Histórico de devoluções <span class="count-badge" id="historico-count">0</span></h2>
+      </div>
+      <div id="lista-historico" class="ledger"></div>
+      <p class="empty-state" id="historico-empty" hidden>Ainda não há devoluções registradas.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
